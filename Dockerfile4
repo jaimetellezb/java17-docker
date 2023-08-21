@@ -1,0 +1,13 @@
+FROM amazoncorretto:17-alpine as builder
+VOLUME /tmp
+WORKDIR /app
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM amazoncorretto:17-alpine
+COPY --from=builder app/dependencies/ ./
+COPY --from=builder app/snapshot-dependencies/ ./
+COPY --from=builder app/spring-boot-loader/ ./
+COPY --from=builder app/ ./
+ENTRYPOINT ["java","-jar","/app.jar"]

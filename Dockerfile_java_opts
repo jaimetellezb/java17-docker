@@ -1,0 +1,10 @@
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+# con Maven
+#ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","${JAVA_OPTS}","-jar","/app.jar"]
+
+#docker build -t example/java17-opts .
+#docker run -p 9000:9000 -e JAVA_OPTS=-Dserver.port=9000 example/java17-opts

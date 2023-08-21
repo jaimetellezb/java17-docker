@@ -1,0 +1,10 @@
+# Antes de ejecutar el docker build -t name .
+# Es importante haber compilado primero: gradle build
+# ./gradlew build
+
+# Si está con un Mac M1 ejecutar con --platform=linux/amd64
+FROM --platform=linux/amd64 eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
